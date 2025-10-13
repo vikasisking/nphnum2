@@ -40,9 +40,9 @@ def country_to_flag(country_name: str) -> str:
 
 LOGIN_URL = "http://51.89.99.105/NumberPanel/signin"
 XHR_URL = "http://51.89.99.105/NumberPanel/client/res/data_smscdr.php?fdate1=2025-09-05%2000:00:00&fdate2=2026-09-04%2023:59:59&frange=&fclient=&fnum=&fcli=&fgdate=&fgmonth=&fgrange=&fgclient=&fgnumber=&fgcli=&fg=0&sEcho=1&iColumns=9&sColumns=%2C%2C%2C%2C%2C%2C%2C%2C&iDisplayStart=0&iDisplayLength=02&mDataProp_0=0&sSearch_0=&bRegex_0=false&bSearchable_0=true&bSortable_0=true&mDataProp_1=1&sSearch_1=&bRegex_1=false&bSearchable_1=true&bSortable_1=true&mDataProp_2=2&sSearch_2=&bRegex_2=false&bSearchable_2=true&bSortable_2=true&mDataProp_3=3&sSearch_3=&bRegex_3=false&bSearchable_3=true&bSortable_3=true&mDataProp_4=4&sSearch_4=&bRegex_4=false&bSearchable_4=true&bSortable_4=true&mDataProp_5=5&sSearch_5=&bRegex_5=false&bSearchable_5=true&bSortable_5=true&mDataProp_6=6&sSearch_6=&bRegex_6=false&bSearchable_6=true&bSortable_6=true&mDataProp_7=7&sSearch_7=&bRegex_7=false&bSearchable_7=true&bSortable_7=true&mDataProp_8=8&sSearch_8=&bRegex_8=false&bSearchable_8=true&bSortable_8=false&sSearch=&bRegex=false&iSortCol_0=0&sSortDir_0=desc&iSortingCols=1&_=1756968295291"
-USERNAME = os.getenv("USERNAME", "developer25")
-PASSWORD = os.getenv("PASSWORD", "developer25")
-BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+USERNAME = os.getenv("USERNAME")
+PASSWORD = os.getenv("PASSWORD")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 DEVELOPER_ID = "@hiden_25"
 CHANNEL_LINK = "https://t.me/freeotpss"
 
@@ -148,22 +148,30 @@ def extract_otp(message: str) -> str | None:
 async def send_telegram_message(current_time, country, number, sender, message):
     flag = country_to_flag(country)
     otp = extract_otp(message)
-    otp_line = f"<blockquote>🔑 <b>OTP:</b> <code>{html.escape(otp)}</code></blockquote>\n" if otp else ""
+
+    otp_section = (
+        f"\n🔐 <b>OTP:</b> <code>{html.escape(otp)}</code>\n"
+        if otp else ""
+    )
 
     formatted = (
-        f"{flag} New {country} {sender} OTP Recived \n\n"
-        f"<blockquote>🕰 <b>Time:</b> <b>{html.escape(str(current_time))}</b></blockquote>\n"
-        f"<blockquote>🌍 <b>Country:</b> <b>{html.escape(country)} {flag}</b></blockquote>\n"
-        f"<blockquote>📱 <b>Service:</b> <b>{html.escape(sender)}</b></blockquote>\n"
-        f"<blockquote>📞 <b>Number:</b> <b>{html.escape(mask_number(number))}</b></blockquote>\n"
-        f"{otp_line}"
-        f"<blockquote>✉️ <b>Full Message:</b></blockquote>\n"
-        f"<blockquote><code>{html.escape(message)}</code></blockquote>\n"
+        f"🚨 <b>New OTP Received!</b>\n"
+        f"{flag} <b>{country}</b> | <b>{sender}</b>\n"
+        f"━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"🕓 <b>Time:</b> {html.escape(str(current_time))}\n"
+        f"📞 <b>Number:</b> <code>{html.escape(mask_number(number))}</code>\n"
+        f"{otp_section}"
+        f"━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"💬 <b>Full Message:</b>\n"
+        f"<code>{html.escape(message)}</code>\n"
+        f"━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"👨‍💻 <b>Developer:</b> {DEVELOPER_ID}\n"
+        f"📢 <b>Channel:</b> {CHANNEL_LINK}"
     )
 
     keyboard = [
-        [InlineKeyboardButton("📱 Channel", url=f"{CHANNEL_LINK}")],
-        [InlineKeyboardButton("👨‍💻 Developer", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")],
+        [InlineKeyboardButton("📱 Visit Channel", url=f"{CHANNEL_LINK}")],
+        [InlineKeyboardButton("👨‍💻 Contact Dev", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
