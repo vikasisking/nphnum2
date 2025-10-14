@@ -44,6 +44,7 @@ USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 DEVELOPER_ID = "@hiden_25"
+BOT_USERNAME = "freewpcheckbot"
 CHANNEL_LINK = "https://t.me/freeotpss"
 
 HEADERS = {
@@ -212,9 +213,14 @@ async def send_telegram_message(current_time, country, number, sender, message):
     )
 
     keyboard = [
-        [InlineKeyboardButton("📱 Visit Channel", url=f"{CHANNEL_LINK}")],
-        [InlineKeyboardButton("👨‍💻 Contact Dev", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")],
+    [
+        InlineKeyboardButton("📱 Visit Channel", url=CHANNEL_LINK),
+        InlineKeyboardButton("👨‍💻 Contact Dev", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")
+    ],
+    [
+        InlineKeyboardButton(f"🤖 {BOT_USERNAME}", url=f"https://t.me/{BOT_USERNAME}?start=start")
     ]
+]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await asyncio.sleep(1)
