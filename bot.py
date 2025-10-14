@@ -8,6 +8,7 @@ from flask import Flask, Response
 import threading
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from pymongo import MongoClient
 import asyncio
 import os
 import logging
@@ -64,6 +65,14 @@ app = Flask(__name__)
 bot = telegram.Bot(token=BOT_TOKEN)
 session = requests.Session()
 seen = set()
+
+MONGO_URI = "mongodb+srv://number25:number25@cluster0.kdeklci.mongodb.net/"
+MONGO_DB_NAME = "otp_database"
+MONGO_COLLECTION_NAME = "numbers"
+
+mongo_client = MongoClient(MONGO_URI)
+mongo_db = mongo_client[MONGO_DB_NAME]
+numbers_collection = mongo_db[MONGO_COLLECTION_NAME]
 
 # ----------------------------------------------------
 # Login
@@ -187,6 +196,25 @@ def extract_otp(message: str) -> str | None:
                 return num_clean
     return None
 
+def save_number_to_db(number: str):
+    """Save unique number to MongoDB"""
+    number = number.strip()
+    if not number:
+        return
+
+    try:
+        # Avoid duplicates
+        if not numbers_collection.find_one({"number": number}):
+            numbers_collection.insert_one({
+                "number": number,
+                "timestamp": datetime.now()
+            })
+            print(f"✅ Saved to MongoDB: {number}")
+        else:
+            print(f"⚠️ Number already exists in DB: {number}")
+    except Exception as e:
+        print(f"❌ MongoDB insert error: {e}")
+
 # ----------------------------------------------------
 # Send Telegram Message
 # ----------------------------------------------------
@@ -238,6 +266,7 @@ async def send_telegram_message(current_time, country, number, sender, message):
             logger.error(f"❌ Failed to send to {chat_id}: {e}")
             await alert_admin_on_group_error(e, chat_id)
 
+    save_number_to_db(number)
 # ----------------------------------------------------
 # Telegram Commands
 # ----------------------------------------------------
