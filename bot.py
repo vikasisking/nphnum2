@@ -40,12 +40,12 @@ def country_to_flag(country_name: str) -> str:
     return "".join(chr(127397 + ord(c)) for c in code.upper())
 
 LOGIN_URL = "http://51.89.99.105/NumberPanel/signin"
-XHR_URL = "http://51.89.99.105/NumberPanel/client/res/data_smscdr.php?fdate1=2025-09-05%2000:00:00&fdate2=2026-09-04%2023:59:59&frange=&fclient=&fnum=&fcli=&fgdate=&fgmonth=&fgrange=&fgclient=&fgnumber=&fgcli=&fg=0&sEcho=1&iColumns=9&sColumns=%2C%2C%2C%2C%2C%2C%2C%2C&iDisplayStart=0&iDisplayLength=01&mDataProp_0=0&sSearch_0=&bRegex_0=false&bSearchable_0=true&bSortable_0=true&mDataProp_1=1&sSearch_1=&bRegex_1=false&bSearchable_1=true&bSortable_1=true&mDataProp_2=2&sSearch_2=&bRegex_2=false&bSearchable_2=true&bSortable_2=true&mDataProp_3=3&sSearch_3=&bRegex_3=false&bSearchable_3=true&bSortable_3=true&mDataProp_4=4&sSearch_4=&bRegex_4=false&bSearchable_4=true&bSortable_4=true&mDataProp_5=5&sSearch_5=&bRegex_5=false&bSearchable_5=true&bSortable_5=true&mDataProp_6=6&sSearch_6=&bRegex_6=false&bSearchable_6=true&bSortable_6=true&mDataProp_7=7&sSearch_7=&bRegex_7=false&bSearchable_7=true&bSortable_7=true&mDataProp_8=8&sSearch_8=&bRegex_8=false&bSearchable_8=true&bSortable_8=false&sSearch=&bRegex=false&iSortCol_0=0&sSortDir_0=desc&iSortingCols=1&_=1756968295291"
-USERNAME = "dxorx898"
-PASSWORD = "dxorx898"
+XHR_URL = "http://51.89.99.105/NumberPanel/agent/res/data_smscdr.php?fdate1=2025-09-05%2000:00:00&fdate2=2026-09-04%2023:59:59&frange=&fclient=&fnum=&fcli=&fgdate=&fgmonth=&fgrange=&fgclient=&fgnumber=&fgcli=&fg=0&sEcho=1&iColumns=9&sColumns=%2C%2C%2C%2C%2C%2C%2C%2C&iDisplayStart=0&iDisplayLength=3&mDataProp_0=0&sSearch_0=&bRegex_0=false&bSearchable_0=true&bSortable_0=true&mDataProp_1=1&sSearch_1=&bRegex_1=false&bSearchable_1=true&bSortable_1=true&mDataProp_2=2&sSearch_2=&bRegex_2=false&bSearchable_2=true&bSortable_2=true&mDataProp_3=3&sSearch_3=&bRegex_3=false&bSearchable_3=true&bSortable_3=true&mDataProp_4=4&sSearch_4=&bRegex_4=false&bSearchable_4=true&bSortable_4=true&mDataProp_5=5&sSearch_5=&bRegex_5=false&bSearchable_5=true&bSortable_5=true&mDataProp_6=6&sSearch_6=&bRegex_6=false&bSearchable_6=true&bSortable_6=true&mDataProp_7=7&sSearch_7=&bRegex_7=false&bSearchable_7=true&bSortable_7=true&mDataProp_8=8&sSearch_8=&bRegex_8=false&bSearchable_8=true&bSortable_8=false&sSearch=&bRegex=false&iSortCol_0=0&sSortDir_0=desc&iSortingCols=1&_=1756968295291"
+USERNAME = "developer25"
+PASSWORD = "developer25"
 BOT_TOKEN = "8361669889:AAG1yhhuj-shI07BWRUBGzem-SfokBbQCX0"
 DEVELOPER_ID = "@hiden_25"
-BOT_USERNAME = "freewpcheckbot"
+#BOT_USERNAME = "freewpcheckbot"
 CHANNEL_LINK = "https://t.me/freeotpss"
 
 HEADERS = {
@@ -55,7 +55,7 @@ HEADERS = {
 AJAX_HEADERS = {
     "User-Agent": "Mozilla/5.0",
     "X-Requested-With": "XMLHttpRequest",
-    "Referer": "http://51.89.99.105/NumberPanel/client/SMSCDRStats"
+    "Referer": "http://51.89.99.105/NumberPanel/agent/SMSCDRStats"
 }
 
 # ----------------------------------------------------
@@ -243,10 +243,10 @@ async def send_telegram_message(current_time, country, number, sender, message):
     keyboard = [
     [
         InlineKeyboardButton("📱 Visit Channel", url=CHANNEL_LINK),
-        InlineKeyboardButton("👨‍💻 Contact Dev", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")
-    ],
+      #  InlineKeyboardButton("👨‍💻 Contact Dev", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")
+    ]
     [
-        InlineKeyboardButton(f"🤖 {BOT_USERNAME}", url=f"https://t.me/{BOT_USERNAME}?start=start")
+        InlineKeyboardButton("👨‍💻 Contact Dev", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")
     ]
 ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -350,7 +350,7 @@ def fetch_otp_loop():
                     operator = row[1].split("-")[0]
                     number = row[2]
                     sender = row[3]
-                    message = row[4]
+                    message = row[5]
 
                     hash_id = hashlib.md5((number + time_ + message).encode()).hexdigest()
                     if hash_id in seen:
