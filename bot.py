@@ -244,7 +244,7 @@ async def send_telegram_message(current_time, country, number, sender, message):
     [
         InlineKeyboardButton("📱 Visit Channel", url=CHANNEL_LINK),
       #  InlineKeyboardButton("👨‍💻 Contact Dev", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")
-    ]
+    ],
     [
         InlineKeyboardButton("👨‍💻 Contact Dev", url=f"https://t.me/{DEVELOPER_ID.lstrip('@')}")
     ]
